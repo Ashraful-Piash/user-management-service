@@ -1,14 +1,13 @@
 package com.piashraful.controller;
 
-import com.piashraful.entity.UserEntity;
 import com.piashraful.model.User;
 import com.piashraful.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -23,24 +22,28 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserEntity> createUser(@RequestBody User user) {
-        UserEntity savedUser = userService.saveUser(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User savedUser = userService.saveUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserEntity> getUserById(@PathVariable Long id) {
-        Optional<UserEntity> user = userService.getUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        Optional<User> user = userService.getUserById(id);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserEntity> updateUser(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         try {
-            UserEntity updatedUser = userService.updateUser(id, user);
+            User updatedUser = userService.updateUser(id, user);
             return ResponseEntity.ok(updatedUser);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
+        } catch (ResponseStatusException e) {
+            // Re-throw the exception to let Spring handle the response status
+            throw e;
+        } catch (Exception e) {
+            // Handle unexpected exceptions and return a 500 Internal Server Error
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", e);
         }
     }
 
