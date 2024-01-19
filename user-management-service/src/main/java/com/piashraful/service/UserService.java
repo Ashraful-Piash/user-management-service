@@ -37,19 +37,28 @@ public class UserService {
         log.info("User saved successfully: {}", savedUser);
         return savedUser;
     }
-
     public Optional<User> getUserById(Long id) {
         log.info("Retrieving user by ID: {}", id);
 
         Optional<User> user = userRepository.findById(id).map(this::convertToUser);
 
-        log.info("User retrieved by ID {}: {}", id, user.orElse(null));
+        if (user.isPresent()) {
+            log.info("User retrieved by ID {}: {}", id, user.get());
+        } else {
+            log.info("No user found with ID: {}", id);
+        }
+
         return user;
     }
 
+    // Inside UserService
     public User updateUser(Long id, User user) {
         log.info("Updating user with ID {}: {}", id, user);
-        validateUser(user);
+
+        if (user == null || user.getName() == null || user.getEmail() == null) {
+            log.warn("Invalid user data for update: {}", user);
+            throw new InvalidUserDataException("User name and email cannot be null");
+        }
 
         Optional<UserEntity> existingUserOptional = userRepository.findById(id);
         if (existingUserOptional.isPresent()) {
@@ -64,23 +73,29 @@ public class UserService {
             log.info("User updated successfully: {}", updatedUser);
             return updatedUser;
         } else {
-            log.error("User not found with ID: {}", id);
-            throw new UserNotFoundException("User not found with id: " + id);
+            log.info("No user found with ID: {}", id);
+            return null; // or Optional.empty();
         }
     }
+
 
     public void deleteUser(Long id) {
         log.info("Deleting user with ID: {}", id);
 
-        userRepository.deleteById(id);
-
-        log.info("User deleted successfully with ID: {}", id);
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            log.info("User deleted successfully with ID: {}", id);
+        } else {
+            log.info("User not found with ID: {}", id);
+            throw new UserNotFoundException("User not found with id: " + id);
+        }
     }
+
 
     private void validateUser(User user) {
         if (user == null || user.getName() == null || user.getEmail() == null) {
             log.warn("Invalid user data: {}", user);
-            throw new InvalidUserDataException("User, name, or email cannot be null");
+            throw new InvalidUserDataException("User name and email cannot be null");
         }
     }
 
@@ -88,4 +103,3 @@ public class UserService {
         return new User(userEntity.getId(), userEntity.getName(), userEntity.getEmail());
     }
 }
-
