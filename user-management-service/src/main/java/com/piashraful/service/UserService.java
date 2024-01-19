@@ -37,6 +37,7 @@ public class UserService {
         log.info("User saved successfully: {}", savedUser);
         return savedUser;
     }
+
     public Optional<User> getUserById(Long id) {
         log.info("Retrieving user by ID: {}", id);
 
@@ -51,7 +52,6 @@ public class UserService {
         return user;
     }
 
-    // Inside UserService
     public User updateUser(Long id, User user) {
         log.info("Updating user with ID {}: {}", id, user);
 
@@ -74,7 +74,7 @@ public class UserService {
             return updatedUser;
         } else {
             log.info("No user found with ID: {}", id);
-            return null; // or Optional.empty();
+            return null;
         }
     }
 
