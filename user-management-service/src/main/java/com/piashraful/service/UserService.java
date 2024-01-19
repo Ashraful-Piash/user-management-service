@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -74,7 +75,8 @@ public class UserService {
             return updatedUser;
         } else {
             log.info("No user found with ID: {}", id);
-            return null;
+            throw new UserNotFoundException("No user found with ID: ");
+
         }
     }
 
@@ -96,6 +98,12 @@ public class UserService {
         if (user == null || user.getName() == null || user.getEmail() == null) {
             log.warn("Invalid user data: {}", user);
             throw new InvalidUserDataException("User name and email cannot be null");
+        }
+        UserEntity entity = userRepository.findByEmail(user.getEmail());
+
+        if(Objects.nonNull(entity)){
+            log.warn("Account already exists with this email");
+            throw new InvalidUserDataException("Account already exists with this email");
         }
     }
 

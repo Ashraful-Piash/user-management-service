@@ -52,9 +52,9 @@ public class UserController {
             User updatedUser = userService.updateUser(id, user);
             return ResponseEntity.ok(updatedUser);
         } catch (UserNotFoundException e) {
-            String errorMessage = "User not found with ID: " + id;
+//            String errorMessage = "User not found with ID: " + id;
             // TODO: 19/1/2024 not showing the status message properly
-            return ResponseEntity.status(HttpStatus.OK).body(errorMessage);
+            return ResponseEntity.status(HttpStatus.OK).body(e.getMessage());
         } catch (InvalidUserDataException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
