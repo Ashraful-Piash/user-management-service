@@ -1,6 +1,6 @@
-package com.piashraful.repository;
+package com.user.repository;
 
-import com.piashraful.entity.UserEntity;
+import com.user.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {

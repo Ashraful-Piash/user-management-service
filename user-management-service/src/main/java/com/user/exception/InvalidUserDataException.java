@@ -1,4 +1,4 @@
-package com.piashraful.exception;
+package com.user.exception;
 
 public class InvalidUserDataException extends RuntimeException {
 

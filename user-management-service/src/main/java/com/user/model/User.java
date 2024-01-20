@@ -1,4 +1,4 @@
-package com.piashraful.model;
+package com.user.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

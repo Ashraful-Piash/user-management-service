@@ -1,9 +1,9 @@
-package com.piashraful.controller;
+package com.user.controller;
 
-import com.piashraful.exception.InvalidUserDataException;
-import com.piashraful.exception.UserNotFoundException;
-import com.piashraful.model.User;
-import com.piashraful.service.UserService;
+import com.user.exception.InvalidUserDataException;
+import com.user.exception.UserNotFoundException;
+import com.user.model.User;
+import com.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

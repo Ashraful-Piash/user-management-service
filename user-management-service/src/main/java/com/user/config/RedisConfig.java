@@ -1,4 +1,4 @@
-package com.piashraful.config;
+package com.user.config;
 
 import io.lettuce.core.ClientOptions;
 import org.springframework.beans.factory.annotation.Value;

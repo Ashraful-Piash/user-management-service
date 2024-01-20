@@ -1,4 +1,4 @@
-package com.piashraful.entity;
+package com.user.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
