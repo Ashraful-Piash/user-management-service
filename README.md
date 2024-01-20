@@ -74,7 +74,7 @@ The application follows a RESTful architecture for user management. Key design c
 
 - **Exception Handling:** The application handles different exceptions such as `UserNotFoundException` and `InvalidUserDataException` to provide meaningful error responses.
 
-- **Data Storage:** User data is stored in a relational database (assumed to be configured separately) and cached in Redis for improved performance.
+- **Data Storage:** User data is stored in a relational database (MySQL)and cached in Redis for improved performance.
 
 - **API Documentation:** The API is documented using a consistent and clear format for easy understanding.
 
