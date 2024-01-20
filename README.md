@@ -23,7 +23,7 @@ To build the application, you will need [Java](https://www.oracle.com/java/techn
 1. Clone the repository to your local machine:
 
    ```bash
-   git clone https://github.com/your-username/user-management-app.git
+   git clone https://github.com/Ashraful-Piash/user-management-service.git
    ```
 
 2. Navigate to the project directory:
