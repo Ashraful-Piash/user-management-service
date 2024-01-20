@@ -62,6 +62,17 @@ public class UserController {
     }
 
 
-    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
+        try {
+            userService.deleteUser(id);
+            String successMessage = "User deleted successfully  with ID: " + id;
+            return ResponseEntity.status(HttpStatus.OK).body(successMessage);
+
+        } catch (UserNotFoundException e) {
+            String errorMessage = "User not found with ID: " + id;
+            return ResponseEntity.status(HttpStatus.OK).body(errorMessage);
+        }
+    }
 
 }
