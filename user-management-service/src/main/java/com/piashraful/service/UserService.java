@@ -1,6 +1,5 @@
 package com.piashraful.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.piashraful.entity.UserEntity;
 import com.piashraful.exception.InvalidUserDataException;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -32,12 +32,21 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$";
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+
     public User saveUser(User user) {
         log.info("Saving user: {}", user);
         validateUser(user);
 
         UserEntity userEntity = new UserEntity();
         userEntity.setName(user.getName());
+
+        if (!isValidEmail(user.getEmail())) {
+            log.warn("Invalid email address provided: {}", user.getEmail());
+            throw new InvalidUserDataException("Invalid email address");
+        }
+
         userEntity.setEmail(user.getEmail());
 
         UserEntity savedUserEntity = userRepository.save(userEntity);
@@ -48,6 +57,10 @@ public class UserService {
 
         log.info("User saved successfully: {}", savedUser);
         return savedUser;
+    }
+
+    private boolean isValidEmail(String email) {
+        return EMAIL_PATTERN.matcher(email).matches();
     }
 
     public Optional<User> getUserById(Long id) {
@@ -79,6 +92,11 @@ public class UserService {
             throw new InvalidUserDataException("User name and email cannot be null");
         }
 
+        if (!isValidEmail(user.getEmail())) {
+            log.warn("Invalid email address provided for update: {}", user.getEmail());
+            throw new InvalidUserDataException("Invalid email address");
+        }
+
         Optional<UserEntity> existingUserOptional = userRepository.findById(id);
         if (existingUserOptional.isPresent()) {
             UserEntity existingUser = existingUserOptional.get();
@@ -93,8 +111,7 @@ public class UserService {
             return updatedUser;
         } else {
             log.info("No user found with ID: {}", id);
-            throw new UserNotFoundException("No user found with ID: ");
-
+            throw new UserNotFoundException("No user found with ID: " + id);
         }
     }
 
@@ -108,6 +125,7 @@ public class UserService {
         } else {
             log.info("User not found with ID: {}", id);
             throw new UserNotFoundException("User not found with id: " + id);
+
         }
     }
 
@@ -164,5 +182,4 @@ public class UserService {
             log.info("Failed to save user data into redis");
         }
     }
-
 }

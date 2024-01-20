@@ -29,28 +29,16 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        // Configure Lettuce client options
-        ClientOptions clientOptions = ClientOptions.builder()
-                .disconnectedBehavior(ClientOptions.DisconnectedBehavior.REJECT_COMMANDS)
-                // Add more options as needed
-                .build();
+        ClientOptions clientOptions = ClientOptions.builder().disconnectedBehavior(ClientOptions.DisconnectedBehavior.REJECT_COMMANDS).build();
 
-        // Configure Lettuce connection factory
-        LettuceClientConfiguration lettuceClientConfiguration = LettuceClientConfiguration.builder()
-                .commandTimeout(Duration.ofSeconds(2))
-                .clientOptions(clientOptions)
-                // Add more configuration options as needed
-                .build();
+        LettuceClientConfiguration lettuceClientConfiguration = LettuceClientConfiguration.builder().commandTimeout(Duration.ofSeconds(2)).clientOptions(clientOptions).build();
 
         RedisStandaloneConfiguration standaloneConfig = new RedisStandaloneConfiguration();
         standaloneConfig.setHostName(redisHost);
         standaloneConfig.setPort(redisPort);
         standaloneConfig.setPassword(redisPassword);
 
-        return new LettuceConnectionFactory(
-                standaloneConfig,
-                lettuceClientConfiguration
-        );
+        return new LettuceConnectionFactory(standaloneConfig, lettuceClientConfiguration);
 
     }
 
