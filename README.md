@@ -5,12 +5,16 @@ This application provides basic user management functionalities, including user 
 
 ## Table of Contents
 
+- [Overview](#overview)
 - [Build](#build)
 - [Run](#run)
 - [Test](#test)
 - [Design Considerations](#design-considerations)
-- [Overview](#overview)
-- [Api Reference](api-reference)
+- [API Reference](#api-reference)
+
+## Overview
+
+The User Management Application allows you to manage user information through a set of RESTful APIs. These APIs facilitate the creation, retrieval, update, and deletion of user records.
 
 ## Build
 
@@ -69,18 +73,21 @@ This will execute all the test cases and provide the test results.
 The application follows a RESTful architecture for user management. Key design considerations include:
 
 - **Exception Handling:** The application handles different exceptions such as `UserNotFoundException` and `InvalidUserDataException` to provide meaningful error responses.
-  
+
 - **Data Storage:** User data is stored in a relational database (assumed to be configured separately) and cached in Redis for improved performance.
 
 - **API Documentation:** The API is documented using a consistent and clear format for easy understanding.
 
 - **Caching:** Redis is used for caching user data, reducing database queries for frequently accessed information.
 
-Feel free to explore and modify the application according to your specific use case and requirements.
+## API Reference
 
-## Overview
+Explore the following API endpoints for user management:
 
-This service is built using Java and Spring Boot, providing a robust and scalable solution for user management. It utilizes MySQL as the relational database and Spring Data JPA for data access.
+- [Save User](#save-user)
+- [Get User by ID](#get-user-by-id)
+- [Update User](#update-user)
+- [Delete User](#delete-user)
  
 ## API Reference
 
