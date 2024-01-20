@@ -89,6 +89,8 @@ Explore the following API endpoints for user management:
 - [Update User](#update-user)
 - [Delete User](#delete-user)
  
+Certainly! Below is the updated API reference documentation based on the modifications in your code:
+
 ## API Reference
 
 ### Save User
@@ -117,6 +119,12 @@ Create a new user by providing user information.
     ```http
     {
       "message": "Invalid user data"
+    }
+    ```
+  - Invalid Email Address (HTTP Status Code: 200 OK)
+    ```http
+    {
+      "message": "Invalid email address"
     }
     ```
   - Internal Server Error (HTTP Status Code: 500 Internal Server Error)
@@ -187,6 +195,11 @@ Update user details by providing the user ID and updated information.
     ```http
     {
       "message": "User name and email cannot be null"
+    }
+  - Invalid Email Address (HTTP Status Code: 400 Bad Request)
+    ```http
+    {
+      "message": "Invalid email address"
     }
   - Internal Server Error (HTTP Status Code: 500 Internal Server Error)
     ```http
