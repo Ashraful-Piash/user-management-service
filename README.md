@@ -1,159 +1,188 @@
 
-# User Management Service
+# User Management Application
 
-The User Management Service is a RESTful API that facilitates Implement a RESTful API with the following endpoints:
-Create a new user
-Retrieve user details by ID
-Update user details by ID
-Delete user by ID
+This application provides basic user management functionalities, including user creation, retrieval, update, and deletion. The following documentation outlines how to build, run, and test the application, along with some design considerations.
+
+## Table of Contents
+
+- [Build](#build)
+- [Run](#run)
+- [Test](#test)
+- [Design Considerations](#design-considerations)
+- [Overview](#overview)
+- [Api Reference](api-reference)
+
+## Build
+
+To build the application, you will need [Java](https://www.oracle.com/java/technologies/javase-downloads.html) and [Maven](https://maven.apache.org/download.cgi) installed on your machine. Follow these steps:
+
+1. Clone the repository to your local machine:
+
+   ```bash
+   git clone https://github.com/your-username/user-management-app.git
+   ```
+
+2. Navigate to the project directory:
+
+   ```bash
+   cd user-management-app
+   ```
+
+3. Build the application using Maven:
+
+   ```bash
+   mvn clean install
+   ```
+
+This will compile the source code, run tests, and package the application.
+
+## Run
+
+To run the application, you can use the following steps:
+
+1. Navigate to the target directory:
+
+   ```bash
+   cd target
+   ```
+
+2. Run the application:
+
+   ```bash
+   java -jar user-management-app.jar
+   ```
+
+This will start the application, and it will be accessible at `http://localhost:8080`.
+
+## Test
+
+To run the tests for the application, use the following command:
+
+```bash
+mvn test
+```
+
+This will execute all the test cases and provide the test results.
+
+## Design Considerations
+
+The application follows a RESTful architecture for user management. Key design considerations include:
+
+- **Exception Handling:** The application handles different exceptions such as `UserNotFoundException` and `InvalidUserDataException` to provide meaningful error responses.
+  
+- **Data Storage:** User data is stored in a relational database (assumed to be configured separately) and cached in Redis for improved performance.
+
+- **API Documentation:** The API is documented using a consistent and clear format for easy understanding.
+
+- **Caching:** Redis is used for caching user data, reducing database queries for frequently accessed information.
+
+Feel free to explore and modify the application according to your specific use case and requirements.
 
 ## Overview
 
 This service is built using Java and Spring Boot, providing a robust and scalable solution for user management. It utilizes MySQL as the relational database and Spring Data JPA for data access.
-
-## MySQL Configuration
-
-This project uses MySQL as the relational database. Below are the details of the MySQL configuration:
-
-### Connection Details
-
-- **Host:** `localhost`
-- **Port:** `3306`
-- **Database:** `your_database_name`
-- **Username:** `your_database_username`
-- **Password:** `your_database_password`
-
-### Hibernate Configuration
-
-Hibernate is used as the JPA provider with the following settings:
-
-- **DDL Auto:** `update`
-- **Show SQL:** `true`
-- **Database Platform:** `org.hibernate.dialect.MySQLDialect`
-
-## Spring Data JPA
-
-Spring Data JPA is utilized for simplified data access using the Repository pattern. Entity classes and corresponding repositories are used for interacting with the database.
-
-## Redis Configuration
-
-This project also uses Redis for caching purposes. Below are the details of the Redis configuration:
-
-### Connection Details
-
-- **Host:** `localhost`
-- **Port:** `6379`
-- **Password:** [Your Redis Password, if applicable]
-
-### Redis Client Configuration
-
-The Redis client is configured with the following options:
-
-- **Disconnected Behavior:** `REJECT_COMMANDS`
-- **Command Timeout:** `2 seconds` (adjustable)
-
-### Redis Template
-
-A custom RedisTemplate named "customRedisTemplate" is created with the following settings:
-
-- **Key Serialization:** String
-- **Value Serialization:** GenericToStringSerializer for Objects
-
+ 
 ## API Reference
 
 ### Save User
 
 Create a new user by providing user information.
 
-- **Endpoint:** `POST /api/users`
-- **Request Body:**
-  {
-    "name": "John Doe",
-    "email": "john.doe@example.com"
-  }
+- **Request:**
+  ```http
+  POST /api/users
   ```
+  | Parameter | Type   | Description                |
+  | --------- | ------ | -------------------------- |
+  | `name`    | string | **Required**. User's name  |
+  | `email`   | string | **Required**. User's email |
+
 - **Response:**
   - Success (HTTP Status Code: 201 Created)
-   
+    ```http
     {
       "id": 1,
       "name": "John Doe",
       "email": "john.doe@example.com"
     }
-
-  - Invalid User Data (HTTP Status Code: 400 Bad Request)
-    
+    ```
+  - Invalid User Data (HTTP Status Code: 200 OK)
+    ```http
     {
       "message": "Invalid user data"
     }
-   
+    ```
   - Internal Server Error (HTTP Status Code: 500 Internal Server Error)
- 
+    ```http
     {
       "message": "Error processing the request"
     }
-  
+    ```
 
 ### Get User by ID
 
 Retrieve user details by providing the user ID.
 
-- **Endpoint:** `GET /api/users/{id}`
-- **Path Parameter:**
-  - `id` (Long): User ID
+- **Request:**
+  ```http
+  GET /api/users/{id}
+  ```
+  | Parameter | Type   | Description                  |
+  | --------- | ------ | ---------------------------- |
+  | `id`      | long   | **Required**. User's ID to fetch |
+
 - **Response:**
   - Success (HTTP Status Code: 200 OK)
-   
+    ```http
     {
       "id": 1,
       "name": "John Doe",
       "email": "john.doe@example.com"
     }
-  
-  - User Not Found (HTTP Status Code: 404 Not Found)
-
+    ```
+  - User Not Found (HTTP Status Code: 200 OK)
+    ```http
     {
       "message": "User not found with ID: {id}"
     }
- 
+    ```
 
 ### Update User
 
 Update user details by providing the user ID and updated information.
 
-- **Endpoint:** `PUT /api/users/{id}`
-- **Path Parameter:**
-  - `id` (Long): User ID
-- **Request Body:**
-
-  {
-    "name": "Updated Name",
-    "email": "updated.email@example.com"
-  }
+- **Request:**
+  ```http
+  PUT /api/users/{id}
   ```
+  | Parameter | Type   | Description                  |
+  | --------- | ------ | ---------------------------- |
+  | `id`      | long   | **Required**. User's ID       |
+  | `name`    | string | Updated user name            |
+  | `email`   | string | Updated user email           |
+
 - **Response:**
   - Success (HTTP Status Code: 200 OK)
-    
+    ```http
     {
       "id": 1,
       "name": "Updated Name",
       "email": "updated.email@example.com"
     }
     ```
-  - User Not Found (HTTP Status Code: 404 Not Found)
-   
+  - User Not Found (HTTP Status Code: 200 OK)
+    ```http
     {
       "message": "User not found with ID: {id}"
     }
     ```
   - Invalid User Data (HTTP Status Code: 400 Bad Request)
- 
+    ```http
     {
-      "message": "Invalid user data"
+      "message": "User name and email cannot be null"
     }
-    ```
   - Internal Server Error (HTTP Status Code: 500 Internal Server Error)
-   
+    ```http
     {
       "message": "Internal Server Error"
     }
@@ -163,15 +192,19 @@ Update user details by providing the user ID and updated information.
 
 Delete a user by providing the user ID.
 
-- **Endpoint:** `DELETE /api/users/{id}`
-- **Path Parameter:**
-  - `id` (Long): User ID
-- **Response:**
+- **Request:**
+  ```http
+  DELETE /api/users/{id}
+  ```
+  | Parameter | Type   | Description                  |
+  | --------- | ------ | ---------------------------- |
+  | `id`      | long   | **Required**. User's ID       |
+
+- **Responses:**
   - Success (HTTP Status Code: 204 No Content)
-  - User Not Found (HTTP Status Code: 404 Not Found)
-   
+  - User Not Found (HTTP Status Code: 200 OK)
+    ```http
     {
       "message": "User not found with ID: {id}"
     }
-   
-
+    ```
