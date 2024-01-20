@@ -14,7 +14,7 @@ This application provides basic user management functionalities, including user 
 
 ## Overview
 
-The User Management Application allows you to manage user information through a set of RESTful APIs. These APIs facilitate the creation, retrieval, update, and deletion of user records.
+The User Management Service allows you to manage user information through a set of RESTful APIs. These APIs facilitate the creation, retrieval, update, and deletion of user records.
 
 ## Build
 
@@ -80,16 +80,7 @@ The application follows a RESTful architecture for user management. Key design c
 
 - **Caching:** Redis is used for caching user data, reducing database queries for frequently accessed information.
 
-## API Reference
 
-Explore the following API endpoints for user management:
-
-- [Save User](#save-user)
-- [Get User by ID](#get-user-by-id)
-- [Update User](#update-user)
-- [Delete User](#delete-user)
- 
-Certainly! Below is the updated API reference documentation based on the modifications in your code:
 
 ## API Reference
 
@@ -221,10 +212,13 @@ Delete a user by providing the user ID.
   | `id`      | long   | **Required**. User's ID       |
 
 - **Responses:**
-  - Success (HTTP Status Code: 204 No Content)
+  - Success (HTTP Status Code: 200 OK)
+    ```http
+    {
+      "message": "User deleted successfully with ID: {id}"
+    }
   - User Not Found (HTTP Status Code: 200 OK)
     ```http
     {
       "message": "User not found with ID: {id}"
     }
-    ```
