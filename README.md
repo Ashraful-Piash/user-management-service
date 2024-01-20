@@ -1,5 +1,5 @@
 
-# User Management Application
+# User Management Service
 
 This application provides basic user management functionalities, including user creation, retrieval, update, and deletion. The following documentation outlines how to build, run, and test the application, along with some design considerations.
 
